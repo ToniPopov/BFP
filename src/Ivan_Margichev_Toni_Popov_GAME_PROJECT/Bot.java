@@ -4,9 +4,9 @@ public class Bot extends GamePlayers{
 String v;
 	String c;
 	//TEST !
-//new TEst
+    //new TEst
 	//test test
-	
+
 	Bot(){
 		super(validateData("Computer"));
 	}
