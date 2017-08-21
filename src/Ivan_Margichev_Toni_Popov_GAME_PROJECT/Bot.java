@@ -8,6 +8,6 @@ String v;
 	//test test
 	
 	Bot(){
-		super("Computer");
+		super(validateData("Computer"));
 	}
 }

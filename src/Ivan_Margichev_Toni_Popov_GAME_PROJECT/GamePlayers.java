@@ -11,4 +11,13 @@ public abstract class GamePlayers {
 			this.name = name;
 		}
 	}
+	
+	
+	String validateData(String str){
+		if(str != null && !str.isEmpty()){
+			return str;
+		}else{
+			return "COMP";
+		}
+	}
 }
