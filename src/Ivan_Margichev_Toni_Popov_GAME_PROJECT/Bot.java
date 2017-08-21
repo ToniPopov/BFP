@@ -6,6 +6,7 @@ String v;
 	//TEST !
     //new TEst
 	//test test
+	//now comentar
 
 	Bot(){
 		super(validateData("Computer"));
