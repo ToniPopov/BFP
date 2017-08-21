@@ -5,6 +5,8 @@ String v;
 	String c;
 	//TEST !
 //new TEst
+	//test test
+	
 	Bot(){
 		super("Computer");
 	}
