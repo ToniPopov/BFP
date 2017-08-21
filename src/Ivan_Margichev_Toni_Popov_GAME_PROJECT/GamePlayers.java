@@ -13,7 +13,7 @@ public abstract class GamePlayers {
 	}
 	
 	
-	String validateData(String str){
+	static String validateData(String str){
 		if(str != null && !str.isEmpty()){
 			return str;
 		}else{
