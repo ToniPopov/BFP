@@ -14,7 +14,7 @@ public class FoxAndHunter implements IGame {
 	private Player player;
 	private Bot bot;
 	boolean checkWay = false;
-	int[] botFigurePositions ;
+	int[] botFigurePositions;
 	int[] playerCurentPlace = new int[2];
 	private int move;
 
@@ -37,29 +37,27 @@ public class FoxAndHunter implements IGame {
 			++row;
 		}
 		this.matr = new char[row][row];
-		botFigurePositions= new int[row];
+		botFigurePositions = new int[row];
 		fillMatr();
 		printBoard();
-		int count = 0;
 		while (true) {
-			count++;
-			moves(in);
+			if (moves(in)) {
+				printBoard();
+				break;
+			}
 			printBoard();
 			botCheck();
 			printBoard();
-			if (count == 20) {
-				break;
-			}
+
 		}
 		System.out.println("End game!");
-
 		in.close();
 
 	}
 
 	public void fillMatr() {
-		
-		for (int i = 0,k=0; i < this.matr.length; i++) {
+
+		for (int i = 0, k = 0; i < this.matr.length; i++) {
 			for (int j = 0; j < this.matr[i].length; j++) {
 
 				if ((i + j) % 2 == 0) {
@@ -121,25 +119,24 @@ public class FoxAndHunter implements IGame {
 	public void botCheck() {
 		System.out.println("Move " + this.move);
 		// if (this.move == 1) {
-		if(botFigurePositions[botFigure+1] - 1 <0){
+		if (botFigurePositions[botFigure + 1] - 1 < 0) {
 			checkWay = true;
-		}else if(botFigurePositions[botFigure+1] + 1 > this.matr.length -1){
+		} else if (botFigurePositions[botFigure + 1] + 1 > this.matr.length - 1) {
 			checkWay = false;
 		}
-		if(checkWay){
-			botMove(botFigurePositions[botFigure] + 1, botFigurePositions[botFigure+1] + 1,
-				botFigurePositions[botFigure], botFigurePositions[botFigure+1], botFigure);
-		}else{
-			botMove(botFigurePositions[botFigure] + 1, botFigurePositions[botFigure+1] - 1,
-					botFigurePositions[botFigure], botFigurePositions[botFigure+1], botFigure);
+		if (checkWay) {
+			botMove(botFigurePositions[botFigure] + 1, botFigurePositions[botFigure + 1] + 1,
+					botFigurePositions[botFigure], botFigurePositions[botFigure + 1], botFigure);
+		} else {
+			botMove(botFigurePositions[botFigure] + 1, botFigurePositions[botFigure + 1] - 1,
+					botFigurePositions[botFigure], botFigurePositions[botFigure + 1], botFigure);
 		}
-		
 
 		if (botFigure == botFigurePositions.length - 2) {
 			botFigure = 0;
 			checkWay = false;
 		} else {
-			botFigure +=2;
+			botFigure += 2;
 		}
 
 		// }
@@ -162,14 +159,14 @@ public class FoxAndHunter implements IGame {
 	public void botMove(int row, int col, int oldRow, int oldCol, int figureNum) {
 		boolean returnMethos = false;
 		System.out.println(Arrays.toString(botFigurePositions));
-		System.out.println("finum "+figureNum);
+		System.out.println("finum " + figureNum);
 		if (row >= 0 && row <= this.matr.length - 1) {
 			if (col >= 0 && col <= this.matr.length - 1 && this.matr[row][col] == ' ') {
 				System.out.println(this.matr[oldRow][oldCol]);
 				this.matr[row][col] = this.matr[oldRow][oldCol];
 				this.matr[oldRow][oldCol] = ' ';
-				this.botFigurePositions[figureNum]= row;
-				this.botFigurePositions[figureNum+1] =col;
+				this.botFigurePositions[figureNum] = row;
+				this.botFigurePositions[figureNum + 1] = col;
 				System.out.println(Arrays.toString(botFigurePositions));
 
 				returnMethos = true;
@@ -179,6 +176,7 @@ public class FoxAndHunter implements IGame {
 	}
 
 	boolean moves(Scanner in) {
+		boolean returnVal = false;
 		System.out.println("1.Move Left && Up");
 		System.out.println("2.Move Rigth && Up");
 		System.out.println("3.Move Left && Down");
@@ -210,14 +208,17 @@ public class FoxAndHunter implements IGame {
 				}
 				break;
 			case 0:
+				returnVal = true;
 				break;
 			}
 
 		} else {
 			moves(in);
 		}
-
-		return true;
+		if (playerCurentPlace[0] == 0) {
+			returnVal = true;
+		}
+		return returnVal;
 	}
 
 	public boolean checkAndMove(int row, int col, int oldRow, int oldCol) {
