@@ -1,6 +1,7 @@
 package Ivan_Margichev_Toni_Popov_GAME_PROJECT;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -8,13 +9,14 @@ public class FoxAndHunter implements IGame {
 	protected char[][] matr;
 	protected Scanner in;
 	protected int row;
-	protected int col;
+	protected int botFigure;
 	protected int countEnd = 0;
 	private Player player;
 	private Bot bot;
-	boolean returnBool = false;
-	ArrayList<Integer> botFigurePositions = new ArrayList<Integer>();
+	boolean checkWay = false;
+	int[] botFigurePositions ;
 	int[] playerCurentPlace = new int[2];
+	private int move;
 
 	FoxAndHunter(Player player) {
 		bot = new Bot();
@@ -35,12 +37,15 @@ public class FoxAndHunter implements IGame {
 			++row;
 		}
 		this.matr = new char[row][row];
+		botFigurePositions= new int[row];
 		fillMatr();
 		printBoard();
 		int count = 0;
 		while (true) {
 			count++;
 			moves(in);
+			printBoard();
+			botCheck();
 			printBoard();
 			if (count == 20) {
 				break;
@@ -53,14 +58,16 @@ public class FoxAndHunter implements IGame {
 	}
 
 	public void fillMatr() {
-		for (int i = 0; i < this.matr.length; i++) {
+		
+		for (int i = 0,k=0; i < this.matr.length; i++) {
 			for (int j = 0; j < this.matr[i].length; j++) {
 
 				if ((i + j) % 2 == 0) {
 					this.matr[i][j] = '#';
 				} else if (i == 0 && (i + j) % 2 != 0) {
-					botFigurePositions.add(i);
-					botFigurePositions.add(j);
+					botFigurePositions[k] = i;
+					botFigurePositions[++k] = j;
+					k++;
 					this.matr[i][j] = '\u25C9';
 				} else {
 					this.matr[i][j] = ' ';
@@ -111,34 +118,94 @@ public class FoxAndHunter implements IGame {
 
 	}
 
+	public void botCheck() {
+		System.out.println("Move " + this.move);
+		// if (this.move == 1) {
+		if(botFigurePositions[botFigure+1] - 1 <0){
+			checkWay = true;
+		}else if(botFigurePositions[botFigure+1] + 1 > this.matr.length -1){
+			checkWay = false;
+		}
+		if(checkWay){
+			botMove(botFigurePositions[botFigure] + 1, botFigurePositions[botFigure+1] + 1,
+				botFigurePositions[botFigure], botFigurePositions[botFigure+1], botFigure);
+		}else{
+			botMove(botFigurePositions[botFigure] + 1, botFigurePositions[botFigure+1] - 1,
+					botFigurePositions[botFigure], botFigurePositions[botFigure+1], botFigure);
+		}
+		
+
+		if (botFigure == botFigurePositions.length - 2) {
+			botFigure = 0;
+			checkWay = false;
+		} else {
+			botFigure +=2;
+		}
+
+		// }
+		// else if (this.move == 2) {
+		// botMove(botFigurePositions.get(2) + 1, botFigurePositions.get(3) + 1,
+		// botFigurePositions.get(2),
+		// botFigurePositions.get(3), 2);
+		// } else if (this.move == 3) {
+		// botMove(botFigurePositions.get(4) + 1, botFigurePositions.get(5) + 1,
+		// botFigurePositions.get(4),
+		// botFigurePositions.get(5), 4);
+		// } else if (this.move == 4) {
+		// botMove(botFigurePositions.get(6) + 1, botFigurePositions.get(7) - 1,
+		// botFigurePositions.get(6),
+		// botFigurePositions.get(7), 6);
+		// }
+		//
+	}
+
+	public void botMove(int row, int col, int oldRow, int oldCol, int figureNum) {
+		boolean returnMethos = false;
+		System.out.println(Arrays.toString(botFigurePositions));
+		System.out.println("finum "+figureNum);
+		if (row >= 0 && row <= this.matr.length - 1) {
+			if (col >= 0 && col <= this.matr.length - 1 && this.matr[row][col] == ' ') {
+				System.out.println(this.matr[oldRow][oldCol]);
+				this.matr[row][col] = this.matr[oldRow][oldCol];
+				this.matr[oldRow][oldCol] = ' ';
+				this.botFigurePositions[figureNum]= row;
+				this.botFigurePositions[figureNum+1] =col;
+				System.out.println(Arrays.toString(botFigurePositions));
+
+				returnMethos = true;
+			}
+		}
+
+	}
+
 	boolean moves(Scanner in) {
 		System.out.println("1.Move Left && Up");
 		System.out.println("2.Move Rigth && Up");
 		System.out.println("3.Move Left && Down");
 		System.out.println("4.Move Rigth && Down");
 		System.out.println("0.Exit");
-		int move = in.nextInt();
+		move = in.nextInt();
 		if (move >= 0 && move <= 4) {
 			int row = this.playerCurentPlace[0];
 			int col = this.playerCurentPlace[1];
 			switch (move) {
 			case 1:
-				if (!checkMove(row - 1, col - 1, row, col)) {
+				if (!checkAndMove(row - 1, col - 1, row, col)) {
 					moves(in);
 				}
 				break;
 			case 2:
-				if (!checkMove(row - 1, col + 1, row, col)) {
+				if (!checkAndMove(row - 1, col + 1, row, col)) {
 					moves(in);
 				}
 				break;
 			case 3:
-				if (!checkMove(row + 1, col - 1, row, col)) {
+				if (!checkAndMove(row + 1, col - 1, row, col)) {
 					moves(in);
 				}
 				break;
 			case 4:
-				if (!checkMove(row + 1, col + 1, row, col)) {
+				if (!checkAndMove(row + 1, col + 1, row, col)) {
 					moves(in);
 				}
 				break;
@@ -153,7 +220,7 @@ public class FoxAndHunter implements IGame {
 		return true;
 	}
 
-	public boolean checkMove(int row, int col, int oldRow, int oldCol) {
+	public boolean checkAndMove(int row, int col, int oldRow, int oldCol) {
 		boolean returnMethos = false;
 		if (row >= 0 && row <= this.matr.length - 1) {
 			if (col >= 0 && col <= this.matr.length - 1 && this.matr[row][col] == ' ') {
