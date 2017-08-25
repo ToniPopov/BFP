@@ -159,7 +159,7 @@ public class Dots implements IGame {
 			}
 		}
 		if (!breakLoop) {
-			for (int row = 1; row < this.matr.length - 1; row += 2) {
+			Done: for (int row = 1; row < this.matr.length - 1; row += 2) {
 				for (int col = 1; col < this.matr[row].length - 1; col += 2) {
 					if (this.matr[row][col] == ' ') {
 						if (this.matr[row + 1][col] == (' ') && this.matr[row][col + 1] == (' ')
@@ -184,7 +184,40 @@ public class Dots implements IGame {
 								breakLoop = true;
 								break;
 							}
-							break;
+							break Done;
+						}
+					}
+				}
+			}
+		if(breakLoop){
+			return;
+		}
+			Done: for (int row = 1; row < this.matr.length - 1; row += 2) {
+				for (int col = 1; col < this.matr[row].length - 1; col += 2) {
+					if (this.matr[row][col] == ' ') {
+						if (this.matr[row + 1][col] == (' ') && this.matr[row][col + 1] == (' ')
+								&& this.matr[row][col - 1] == (' ') && this.matr[row - 1][col] == (' ')) {
+							int r = rand.nextInt(4) + 1;
+							System.out.println(r);
+							switch (r) {
+							case 1:
+								moves(row - 1, col, this.bot);
+								breakLoop = true;
+								break;
+							case 2:
+								moves(row, col - 1, this.bot);
+								breakLoop = true;
+								break;
+							case 3:
+								moves(row + 1, col, this.bot);
+								breakLoop = true;
+								break;
+							case 4:
+								moves(row, col + 1, this.bot);
+								breakLoop = true;
+								break;
+							}
+							break Done;
 						} else if (this.matr[row + 1][col] == ('-') && this.matr[row][col + 1] == (' ')
 								&& this.matr[row][col - 1] == (' ') && this.matr[row - 1][col] == (' ')) {
 							int r = rand.nextInt(3) + 1;
@@ -203,22 +236,7 @@ public class Dots implements IGame {
 								breakLoop = true;
 								break;
 							}
-							break;
-						} else if (this.matr[row + 1][col] == ('-') && this.matr[row][col + 1] == (' ')
-								&& this.matr[row][col - 1] == (' ') && this.matr[row - 1][col] == ('-')) {
-							int r = rand.nextInt(2) + 1;
-							System.out.println(r);
-							switch (r) {
-							case 1:
-								moves(row, col - 1, this.bot);
-								breakLoop = true;
-								break;
-							case 2:
-								moves(row, col + 1, this.bot);
-								breakLoop = true;
-								break;
-							}
-							break;
+							break Done;
 						} else if (this.matr[row + 1][col] == (' ') && this.matr[row][col + 1] == ('|')
 								&& this.matr[row][col - 1] == (' ') && this.matr[row - 1][col] == (' ')) {
 							int r = rand.nextInt(3) + 1;
@@ -238,22 +256,27 @@ public class Dots implements IGame {
 								break;
 
 							}
-							break;
-						} else if (this.matr[row + 1][col] == (' ') && this.matr[row][col + 1] == ('|')
+							break Done;
+						} else if (this.matr[row + 1][col] == (' ') && this.matr[row][col + 1] == (' ')
 								&& this.matr[row][col - 1] == ('|') && this.matr[row - 1][col] == (' ')) {
-							int r = rand.nextInt(2) + 1;
+
+							int r = rand.nextInt(3) + 1;
 							System.out.println(r);
 							switch (r) {
 							case 1:
-								moves(row - 1, col, this.bot);
+								moves(row, col + 1, this.bot);
 								breakLoop = true;
 								break;
 							case 2:
+								moves(row - 1, col, this.bot);
+								breakLoop = true;
+								break;
+							case 3:
 								moves(row + 1, col, this.bot);
 								breakLoop = true;
 								break;
 							}
-							break;
+							break Done;
 						} else if (this.matr[row + 1][col] == (' ') && this.matr[row][col + 1] == (' ')
 								&& this.matr[row][col - 1] == (' ') && this.matr[row - 1][col] == ('-')) {
 
@@ -274,27 +297,37 @@ public class Dots implements IGame {
 								break;
 
 							}
-							break;
-						} else if (this.matr[row + 1][col] == (' ') && this.matr[row][col + 1] == (' ')
-								&& this.matr[row][col - 1] == ('|') && this.matr[row - 1][col] == (' ')) {
-
-							int r = rand.nextInt(3) + 1;
+							break Done;
+						} else if (this.matr[row + 1][col] == ('-') && this.matr[row][col + 1] == (' ')
+								&& this.matr[row][col - 1] == (' ') && this.matr[row - 1][col] == ('-')) {
+							int r = rand.nextInt(2) + 1;
 							System.out.println(r);
 							switch (r) {
 							case 1:
-								moves(row, col + 1, this.bot);
+								moves(row, col - 1, this.bot);
 								breakLoop = true;
 								break;
 							case 2:
+								moves(row, col + 1, this.bot);
+								breakLoop = true;
+								break;
+							}
+							break Done;
+						} else if (this.matr[row + 1][col] == (' ') && this.matr[row][col + 1] == ('|')
+								&& this.matr[row][col - 1] == ('|') && this.matr[row - 1][col] == (' ')) {
+							int r = rand.nextInt(2) + 1;
+							System.out.println(r);
+							switch (r) {
+							case 1:
 								moves(row - 1, col, this.bot);
 								breakLoop = true;
 								break;
-							case 3:
+							case 2:
 								moves(row + 1, col, this.bot);
 								breakLoop = true;
 								break;
 							}
-							break;
+							break Done;
 						} else if (this.matr[row + 1][col] == (' ') && this.matr[row][col + 1] == ('|')
 								&& this.matr[row][col - 1] == (' ') && this.matr[row - 1][col] == ('-')) {
 
@@ -311,7 +344,7 @@ public class Dots implements IGame {
 								break;
 
 							}
-							break;
+							break Done;
 						} else if (this.matr[row + 1][col] == ('-') && this.matr[row][col + 1] == ('|')
 								&& this.matr[row][col - 1] == (' ') && this.matr[row - 1][col] == (' ')) {
 
@@ -327,7 +360,7 @@ public class Dots implements IGame {
 								breakLoop = true;
 								break;
 							}
-							break;
+							break Done;
 						} else if (this.matr[row + 1][col] == (' ') && this.matr[row][col + 1] == (' ')
 								&& this.matr[row][col - 1] == ('|') && this.matr[row - 1][col] == ('-')) {
 
@@ -343,7 +376,7 @@ public class Dots implements IGame {
 								breakLoop = true;
 								break;
 							}
-							break;
+							break Done;
 						} else if (this.matr[row + 1][col] == ('-') && this.matr[row][col + 1] == (' ')
 								&& this.matr[row][col - 1] == ('|') && this.matr[row - 1][col] == (' ')) {
 
@@ -360,11 +393,11 @@ public class Dots implements IGame {
 								break;
 
 							}
-							break;
+							break Done;
 						}
 					}
 					if (breakLoop) {
-						break;
+						break Done;
 					}
 				}
 			}
