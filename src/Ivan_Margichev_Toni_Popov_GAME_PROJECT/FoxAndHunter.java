@@ -160,15 +160,62 @@ public class FoxAndHunter implements IGame {
 		boolean returnMethos = false;
 		System.out.println(Arrays.toString(botFigurePositions));
 		System.out.println("finum " + figureNum);
+		System.out.println("Fig Num "+this.botFigure);
 		if (row >= 0 && row <= this.matr.length - 1) {
-			if (col >= 0 && col <= this.matr.length - 1 && this.matr[row][col] == ' ') {
-				System.out.println(this.matr[oldRow][oldCol]);
-				this.matr[row][col] = this.matr[oldRow][oldCol];
-				this.matr[oldRow][oldCol] = ' ';
-				this.botFigurePositions[figureNum] = row;
-				this.botFigurePositions[figureNum + 1] = col;
-				System.out.println(Arrays.toString(botFigurePositions));
-
+			if (col >= 0 && col <= this.matr.length - 1) {
+				System.out.println("ROW " + row + " Col " + col);
+				System.out.println("oldROW " + oldRow + " oldCol " + oldCol);
+				System.out.println(this.matr[row][col]);
+				if (this.matr[row][col] == ' ') {
+					System.out.println("IN FFFF");
+					System.out.println(this.matr[oldRow][oldCol]);
+					this.matr[row][col] = this.matr[oldRow][oldCol];
+					this.matr[oldRow][oldCol] = ' ';
+					this.botFigurePositions[figureNum] = row;
+					this.botFigurePositions[figureNum + 1] = col;
+					System.out.println(Arrays.toString(botFigurePositions));
+				} else if (this.matr[row][col] == '\u25CF') {
+					System.out.println("IN else iff");
+					if((this.matr.length - playerCurentPlace[1]) < this.matr.length/2){
+						this.botFigure = figureNum- 2;
+					}else {
+						this.botFigure  = figureNum + 2;;
+					}
+					System.out.println("fig 2 " + (figureNum));
+					if (checkWay) {
+						botMove(botFigurePositions[botFigure] + 1, botFigurePositions[botFigure + 1] + 1,
+								botFigurePositions[botFigure], botFigurePositions[botFigure + 1], botFigure);
+					} else {
+						botMove(botFigurePositions[botFigure] + 1, botFigurePositions[botFigure + 1] - 1,
+								botFigurePositions[botFigure], botFigurePositions[botFigure + 1], botFigure);
+					}
+//					botMove(this.botFigurePositions[this.botFigure] + 1, this.botFigurePositions[this.botFigure] + 1,
+//							this.botFigurePositions[this.botFigure], this.botFigurePositions[this.botFigure],
+//							figureNum - 2);
+				}
+				// else if( this.matr[row][col] == '\u25C9'){
+				// if(checkWay){
+				// checkWay = false;
+				// }else if(!checkWay){
+				// checkWay = true;
+				// }
+				// if(this.matr.length - this.playerCurentPlace[1] <
+				// this.matr.length/2){
+				// botMove(botFigurePositions[0] + 1, botFigurePositions[0 + 1]
+				// - 1,
+				// botFigurePositions[0], botFigurePositions[0 + 1], 0);
+				// }else if(this.matr.length - this.playerCurentPlace[1] <
+				// this.matr.length/2){
+				// botMove(botFigurePositions[this.matr.length-2] + 1,
+				// botFigurePositions[this.matr.length-2 + 1] - 1,
+				// botFigurePositions[this.matr.length-2],
+				// botFigurePositions[this.matr.length-2 + 1],
+				// this.matr.length-2);
+				// }
+				//
+				//// botFigurePositions[botFigure + 1] + 1 > this.matr.length -
+				// 1
+				// }
 				returnMethos = true;
 			}
 		}
