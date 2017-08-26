@@ -61,14 +61,13 @@ public class Dots implements IGame {
 			printBoard();
 			botMove();
 			printBoard();
-			System.out.println("Player points " + this.player.points);
+			System.out.println(this.player.name+"`s points " + this.player.points);
 			System.out.println("Computer points " + this.bot.points);
 			System.out.println("COUNT "+this.countEnd);
 			if ((row == 0 && col == 0) || (player.points + bot.points == this.countEnd)) {
 				printScore();
 				break;
 			}
-//			System.out.println("Player points " + player.points);
 		}
 		in.close();
 
@@ -294,7 +293,6 @@ public class Dots implements IGame {
 								moves(row, col - 1, this.bot);
 								breakLoop = true;
 								break;
-
 							}
 							break Done;
 						} else if (this.matr[row + 1][col] == ('-') && this.matr[row][col + 1] == ('|')
@@ -423,7 +421,7 @@ public class Dots implements IGame {
 	public void checkRigth(int row, int col, GamePlayers player) {
 		System.out.println("rigth");
 
-		if (row > 0 && row < this.matr.length && col > 0 && col < this.matr.length 
+		if (row > 0 && row < this.matr.length && col > 0 && col < this.matr[0].length 
 				&& this.matr[row + 1][col - 1] == '-' && this.matr[row - 1][col - 1] == '-'
 				&& this.matr[row][col - 2] == '|' && this.matr[row][col - 1] == (' ')) {
 			player.points++;
@@ -432,7 +430,7 @@ public class Dots implements IGame {
 			System.out.println("Row3 " + row + " Col3 " + col + " point3 " + player.points);
 			checkRigth(row, col + 2, player);
 		}
-		if (row < this.matr.length && row > 0 && col > 1 && col < this.matr.length - 1
+		if (row < this.matr.length && row > 0 && col > 1 && col < this.matr[0].length - 1
 				&& this.matr[row + 1][col - 1] == '-' && this.matr[row - 1][col - 1] == ' '
 				&& this.matr[row][col - 2] == '|' && this.matr[row][col - 1] == (' ')) {
 			checkUp(row - 1, col - 1, player);
@@ -463,7 +461,7 @@ public class Dots implements IGame {
 			checkDown(row + 1, col + 1, player);
 
 		}
-		if (row > 0 && row < this.matr.length && col >= 0 && col < this.matr.length - 2
+		if (row > 0 && row < this.matr.length && col >= 0 && col < this.matr[0].length - 2
 				&& this.matr[row - 1][col + 1] == ' ' && this.matr[row + 1][col + 1] == '-'
 				&& this.matr[row][col + 2] == '|' && this.matr[row][col + 1] == (' ')) {
 			checkUp(row - 1, col + 1, player);
