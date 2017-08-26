@@ -12,6 +12,7 @@ public class Dots implements IGame {
 	protected int countEnd = 0;
 	private Player player;
 	private Bot bot;
+	private boolean gameStart;
 
 	private Dots() {
 
@@ -62,11 +63,12 @@ public class Dots implements IGame {
 			printBoard();
 			System.out.println("Player points " + this.player.points);
 			System.out.println("Computer points " + this.bot.points);
-			if ((row == 0 && col == 0) || (player.points - bot.points == finish)) {
+			System.out.println("COUNT "+this.countEnd);
+			if ((row == 0 && col == 0) || (player.points + bot.points == this.countEnd)) {
 				printScore();
 				break;
 			}
-			System.out.println("Player points " + player.points);
+//			System.out.println("Player points " + player.points);
 		}
 		in.close();
 
@@ -74,17 +76,16 @@ public class Dots implements IGame {
 
 	public void botMove() {
 		boolean breakLoop = false;
-		int count = 0;
 		Random rand = new Random();
 		done: for (int row = 1; row < this.matr.length - 1; row += 2) {
 			for (int col = 1; col < this.matr[row].length - 1; col += 2) {
 				if (this.matr[row][col] == ' ') {
-					count++;
+					if(!this.gameStart){
+					this.countEnd++;
+					}
 					if (this.matr[row - 1][col] == ('-') && this.matr[row + 1][col] == ('-')
 							&& this.matr[row][col - 1] == ('|') && this.matr[row][col+1] == (' ')) {
 						moves(row, col + 1, this.bot);
-//						this.bot.points++;
-						this.matr[row][col] = this.bot.name.charAt(0);
 						breakLoop = true;
 						break done;
 					} else if (this.matr[row - 1][col] == ('-') && this.matr[row + 1][col] == ('-')
@@ -107,7 +108,7 @@ public class Dots implements IGame {
 
 				}
 			}
-		}
+		}this.gameStart=true;
 		// System.out.println("Count "+count);
 		if (!breakLoop) {
 			Done: for (int row = 1; row < this.matr.length - 1; row += 2) {
@@ -371,32 +372,17 @@ public class Dots implements IGame {
 			}
 		}
 
-		// for (int i = 0; i < matr.length; i++) {
-		// for (int j = 0; j < matr[i].length; j++) {
-		// if (i % 2 == 0 && j % 2 != 0) {
-		// Dots.matr[i][j] = '-';
-		// Dots.countEnd++;
-		// } else if (i % 2 != 0 && j % 2 == 0) {
-		// Dots.matr[i][j] = '-';
-		// Dots.countEnd++;
-		// }
-		// }
-		// }
-		System.out.println("\nCount End: " + this.countEnd + "\n");
 
 	}
 
 	void checkUp(int row, int col, GamePlayers player) {
-		System.out.println("up");
-		// System.out.println("Row1 " + row + " Col1 " + col + " point1 " +
-		// player.points);
+//		System.out.println("up");
 		if (col > 0 && row >= 0 && row < this.matr.length - 1 && this.matr[row + 1][col + 1] == '|'
 				&& this.matr[row + 1][col - 1] == '|' && this.matr[row + 2][col] == '-'
 				&& this.matr[row + 1][col] == (' ')) {
 			player.points++;
 			this.matr[row][col] = '-';
 			this.matr[row + 1][col] = player.name.charAt(0);
-			System.out.println("Row1 " + row + " Col1 " + col + " point1 " + player.points);
 			checkUp(row - 2, col, player);
 		}
 		if (col > 0 && row >= 0 && row < this.matr.length - 1 && this.matr[row + 1][col + 1] == ' '
@@ -406,18 +392,16 @@ public class Dots implements IGame {
 		}
 		if (col > 0 && row >= 0 && row < this.matr.length - 1 && this.matr[row + 1][col + 1] == '|'
 				&& this.matr[row][col] == '-' && this.matr[row + 2][col] == '-' && this.matr[row + 1][col] == (' ')) {
-			System.out.println("INN1");
 			checkLeft(row + 1, col - 1, player);
 		}
 	}
 
 	public void checkDown(int row, int col, GamePlayers player) {
-		System.out.println("down");
+//		System.out.println("down");
 
 		if (row > 1 && row < this.matr.length && this.matr[row - 1][col + 1] == '|'
 				&& this.matr[row - 1][col - 1] == '|' && this.matr[row - 2][col] == '-'
 				&& this.matr[row - 1][col] == (' ')) {
-			// down check
 			this.matr[row][col] = '-';
 			player.points++;
 			this.matr[row - 1][col] = player.name.charAt(0);
@@ -438,9 +422,8 @@ public class Dots implements IGame {
 
 	public void checkRigth(int row, int col, GamePlayers player) {
 		System.out.println("rigth");
-		// boolean callRec= false;
 
-		if (row > 0 && row < this.matr.length && col > 0 && col < this.matr.length - 2
+		if (row > 0 && row < this.matr.length && col > 0 && col < this.matr.length 
 				&& this.matr[row + 1][col - 1] == '-' && this.matr[row - 1][col - 1] == '-'
 				&& this.matr[row][col - 2] == '|' && this.matr[row][col - 1] == (' ')) {
 			player.points++;
@@ -454,7 +437,7 @@ public class Dots implements IGame {
 				&& this.matr[row][col - 2] == '|' && this.matr[row][col - 1] == (' ')) {
 			checkUp(row - 1, col - 1, player);
 		}
-		if (col > 1 && col < this.matr.length - 1 && this.matr[row - 1][col - 1] == '-' && this.matr[row][col] == '|'
+		if (col > 1 && col < this.matr[0].length - 1 && this.matr[row - 1][col - 1] == '-' && this.matr[row][col] == '|'
 				&& this.matr[row][col - 2] == '|' && this.matr[row][col - 1] == (' ')) {
 			checkDown(row + 1, col - 1, player);
 		}
@@ -464,7 +447,7 @@ public class Dots implements IGame {
 		System.out.println("left");
 		// System.out.println("Row4 " + row + " Col4 " + col + " point4 " +
 		// player.points);
-		if (col >= 0 && col < this.matr.length - 2 && this.matr[row - 1][col + 1] == '-'
+		if (col >= 0 && col < this.matr[0].length - 2 && this.matr[row - 1][col + 1] == '-'
 				&& this.matr[row + 1][col + 1] == '-' && this.matr[row][col + 2] == '|'
 				&& this.matr[row][col + 1] == (' ')) {
 			// down check
@@ -474,7 +457,7 @@ public class Dots implements IGame {
 			System.out.println("Row4 " + row + " Col4 " + col + " point4 " + player.points);
 			checkLeft(row, col - 2, player);
 		}
-		if (col >= 0 && col < this.matr.length - 1 && this.matr[row - 1][col + 1] == '-'
+		if (col >= 0 && col < this.matr[0].length - 1 && this.matr[row - 1][col + 1] == '-'
 				&& this.matr[row + 1][col + 1] == ' ' && this.matr[row][col + 2] == '|'
 				&& this.matr[row][col + 1] == (' ')) {
 			checkDown(row + 1, col + 1, player);
@@ -487,10 +470,6 @@ public class Dots implements IGame {
 		}
 	}
 
-	void distributor(int row, int col, GamePlayers player) {
-
-	}
-
 	void moves(int row, int col, GamePlayers player) {
 		// boolean isInIf = false;
 		if (row >= 0 && row < this.matr.length) {
@@ -498,21 +477,14 @@ public class Dots implements IGame {
 				if (row % 2 == 0 && col % 2 != 0) {
 					System.out.println(player.name + " move");
 					System.out.println("Row " + row + " Col " + col + " point " + player.points);
-					// this.countEnd++;
-
 					// check up
-
 					checkUp(row, col, player);
 					checkDown(row, col, player);
 					this.matr[row][col] = '-';
-					// checkRigth(row-1, col+1, player);
-					// checkLeft(row-1, col-1, player);
 				}
 				if (row % 2 != 0 && col % 2 == 0) {
-					// this.countEnd++;
 					System.out.println(player.name + " move");
 					System.out.println("Row " + row + " Col " + col + " point " + player.points);
-					// check up
 
 					checkLeft(row, col, player);
 					checkRigth(row, col, player);
@@ -557,8 +529,6 @@ public class Dots implements IGame {
 
 	@Override
 	public void checkForWin() {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
