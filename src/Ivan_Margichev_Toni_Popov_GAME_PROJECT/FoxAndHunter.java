@@ -294,13 +294,4 @@ public class FoxAndHunter implements IGame {
 
 	}
 
-	public static void main(String[] args) {
-
-		Player me = new Player("toni");
-		FoxAndHunter play = new FoxAndHunter(me);
-
-		play.play();
-
-	}
-
 }

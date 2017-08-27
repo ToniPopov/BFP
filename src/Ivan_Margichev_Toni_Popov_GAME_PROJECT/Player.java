@@ -15,7 +15,7 @@ public class Player extends GamePlayers {
 		System.out.println("1.Dots");
 		System.out.println("2.Minessweeper");
 		System.out.println("3.Sea chess");
-		System.out.println("4......");
+		System.out.println("4.Fox and the hunter");
 		System.out.println("0.Exit");
 		switch (in.nextInt()) {
 		case 1:
@@ -29,6 +29,10 @@ public class Player extends GamePlayers {
 		case 3:
 			Seachess sea = new Seachess(this);
 			sea.play();
+			break;
+		case 4:
+			FoxAndHunter hunter = new FoxAndHunter(this);
+			hunter.play();
 			break;
 		case 0:
 			break;
